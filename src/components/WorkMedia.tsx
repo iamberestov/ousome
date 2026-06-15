@@ -64,19 +64,50 @@ function WorkMedia({ media, scrollRoot }: WorkMediaProps) {
 
   const frameStyle = {
     '--work-media-ratio': String(aspectRatio),
+    ...('outerAspectRatio' in media && media.outerAspectRatio
+      ? { '--work-media-outer-ratio': String(media.outerAspectRatio) }
+      : {}),
   } as CSSProperties
 
-  if (media.type === 'image') {
+  const isBoxed = media.layout === 'boxed'
+  const mediaClassName = isBoxed ? 'home-work-media home-work-media--boxed' : 'home-work-media'
+
+  const boxedFrameStyle = {
+    '--work-media-box-radius': `${'boxRadius' in media ? (media.boxRadius ?? 12) : 12}px`,
+  } as CSSProperties
+
+  const renderStaticAsset = (src: string, alt: string) => (
+    <img
+      className="home-work-media-asset"
+      src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+    />
+  )
+
+  if (media.type === 'image' || media.type === 'svg') {
+    const asset = renderStaticAsset(media.src, media.alt)
+
+    if (isBoxed) {
+      return (
+        <div ref={containerRef} className={mediaClassName}>
+          <div className="home-work-media-shell" style={frameStyle}>
+            <div
+              className="home-work-media-frame home-work-media-frame--boxed"
+              style={boxedFrameStyle}
+            >
+              {asset}
+            </div>
+          </div>
+        </div>
+      )
+    }
+
     return (
-      <div ref={containerRef} className="home-work-media">
+      <div ref={containerRef} className={mediaClassName}>
         <div className="home-work-media-frame" style={frameStyle}>
-          <img
-            className="home-work-media-asset"
-            src={media.src}
-            alt={media.alt}
-            loading="lazy"
-            decoding="async"
-          />
+          {asset}
         </div>
       </div>
     )
@@ -84,33 +115,50 @@ function WorkMedia({ media, scrollRoot }: WorkMediaProps) {
 
   const posterAlt = media.label ?? 'Project preview'
 
-  return (
-    <div ref={containerRef} className="home-work-media">
-      <div className="home-work-media-frame" style={frameStyle}>
-        {shouldPlayVideo ? (
-          <video
-            ref={videoRef}
-            className="home-work-media-asset"
-            muted
-            loop
-            playsInline
-            autoPlay
-            preload="auto"
-            poster={media.poster}
-            aria-label={posterAlt}
+  const videoAsset = shouldPlayVideo ? (
+    <video
+      ref={videoRef}
+      className="home-work-media-asset"
+      muted
+      loop
+      playsInline
+      autoPlay
+      preload="auto"
+      poster={media.poster}
+      aria-label={posterAlt}
+    >
+      {media.webm ? <source src={media.webm} type="video/webm" /> : null}
+      <source src={media.src} type="video/mp4" />
+    </video>
+  ) : media.poster ? (
+    <img
+      className="home-work-media-asset"
+      src={media.poster}
+      alt={posterAlt}
+      loading="lazy"
+      decoding="async"
+    />
+  ) : null
+
+  if (isBoxed) {
+    return (
+      <div ref={containerRef} className={mediaClassName}>
+        <div className="home-work-media-shell" style={frameStyle}>
+          <div
+            className="home-work-media-frame home-work-media-frame--boxed"
+            style={boxedFrameStyle}
           >
-            {media.webm ? <source src={media.webm} type="video/webm" /> : null}
-            <source src={media.src} type="video/mp4" />
-          </video>
-        ) : media.poster ? (
-          <img
-            className="home-work-media-asset"
-            src={media.poster}
-            alt={posterAlt}
-            loading="lazy"
-            decoding="async"
-          />
-        ) : null}
+            {videoAsset}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div ref={containerRef} className={mediaClassName}>
+      <div className="home-work-media-frame" style={frameStyle}>
+        {videoAsset}
       </div>
     </div>
   )

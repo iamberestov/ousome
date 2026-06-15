@@ -45,30 +45,47 @@ function Home() {
     const root = mainScrollRef.current
     if (!root) return
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting)
-        const heroEntry = visible.find((entry) => entry.target.id === HERO_ID)
+    const resolveActiveSectionId = (): string | null => {
+      const hero = heroRef.current
+      const rootRect = root.getBoundingClientRect()
+      const triggerY = rootRect.top + rootRect.height * 0.25
 
-        if (heroEntry) {
-          setActiveSectionId(null)
-          return
+      if (hero) {
+        const heroRect = hero.getBoundingClientRect()
+        if (heroRect.bottom > triggerY) return null
+      }
+
+      const nearBottom = root.scrollHeight - root.scrollTop - root.clientHeight < 32
+      if (nearBottom) {
+        return workSections[workSections.length - 1]?.id ?? null
+      }
+
+      let activeId: string | null = null
+      let activeTop = -Infinity
+
+      for (const { id } of workSections) {
+        const node = sectionRefs.current[id]
+        if (!node) continue
+
+        const top = node.getBoundingClientRect().top
+        if (top <= triggerY && top > activeTop) {
+          activeTop = top
+          activeId = id
         }
+      }
 
-        const top = visible
-          .filter((entry) => entry.target.id !== HERO_ID)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+      return activeId
+    }
 
-        if (top?.target.id) {
-          setActiveSectionId(top.target.id)
-        }
-      },
-      {
-        root,
-        threshold: [0.2, 0.45, 0.7],
-        rootMargin: '-15% 0px -35% 0px',
-      },
-    )
+    const updateActiveSection = () => {
+      setActiveSectionId(resolveActiveSectionId())
+    }
+
+    const observer = new IntersectionObserver(updateActiveSection, {
+      root,
+      threshold: [0, 0.2, 0.45, 0.7],
+      rootMargin: '-15% 0px -35% 0px',
+    })
 
     const hero = heroRef.current
     if (hero) observer.observe(hero)
@@ -78,7 +95,13 @@ function Home() {
       if (node) observer.observe(node)
     })
 
-    return () => observer.disconnect()
+    root.addEventListener('scroll', updateActiveSection, { passive: true })
+    updateActiveSection()
+
+    return () => {
+      observer.disconnect()
+      root.removeEventListener('scroll', updateActiveSection)
+    }
   }, [])
 
   const activeSection = activeSectionId
