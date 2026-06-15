@@ -268,7 +268,8 @@ const workSections: WorkSection[] = [
     height: 800,
     projectTitle: 'Forms',
     projectMeta: 'ClickUp / 2024',
-    sidebarBody: 'Placeholder copy for the Forms case study.',
+    sidebarBody:
+      'Led a major Forms redesign grounded in real user insights, combining usability testing, customer interviews, and product analytics to simplify form creation and improve the end-to-end experience.',
     media: {
       type: 'video',
       src: '/work/project-13/_main_x2_new.mp4',
@@ -286,7 +287,8 @@ const workSections: WorkSection[] = [
     height: 800,
     projectTitle: 'My Tasks',
     projectMeta: 'ClickUp 2025',
-    sidebarBody: 'Placeholder copy for the My Tasks case study.',
+    sidebarBody:
+      'Explored a new way for users to start their day in ClickUp. Designed a redesigned My Tasks experience that brings priorities, reminders, calendar events, and personal work into one focused daily overview.',
     media: {
       type: 'video',
       src: '/work/project-14/My%20Tasks.mp4',

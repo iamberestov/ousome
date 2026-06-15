@@ -1,5 +1,4 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
 import workSections, { type WorkSection } from '../data/workSections'
 import { smoothScrollElementsToTop } from '../lib/gsapScroll'
 import EmailCopyLink from '../components/EmailCopyLink'
@@ -239,14 +238,6 @@ function Home() {
             </span>
             LinkedIn
           </a>
-          <Link to="/about" className="home-nav-link">
-            <span className="home-nav-icon home-nav-icon--about" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.0001 1.99622C17.525 1.9963 22.004 6.47526 22.004 12.0001C22.0039 17.5249 17.5249 22.0039 12.0001 22.004C6.47526 22.004 1.9963 17.525 1.99622 12.0001C1.99622 6.4752 6.4752 1.99622 12.0001 1.99622ZM12.0001 3.99622C7.57977 3.99622 3.99622 7.57977 3.99622 12.0001C3.9963 16.4204 7.57982 20.004 12.0001 20.004C16.4203 20.0039 20.0039 16.4203 20.004 12.0001C20.004 7.57982 16.4204 3.9963 12.0001 3.99622ZM14.1075 14.049C14.3557 13.5578 14.9547 13.3593 15.4474 13.6056C15.9413 13.8526 16.1416 14.4535 15.8947 14.9474L15.0001 14.5001C15.8944 14.9473 15.8948 14.948 15.8947 14.9484H15.8937L15.8907 14.9542C15.8893 14.9571 15.8878 14.9612 15.8859 14.965C15.882 14.9725 15.8771 14.9822 15.8712 14.9933C15.8591 15.016 15.8421 15.046 15.8214 15.0822C15.7801 15.1545 15.7212 15.2524 15.6447 15.3673C15.4926 15.5955 15.2643 15.9 14.9572 16.2072C14.3482 16.8161 13.3588 17.5001 12.0001 17.5001C10.6415 17.5001 9.6521 16.8161 9.04309 16.2072C8.73595 15.9 8.50769 15.5954 8.35559 15.3673C8.27903 15.2525 8.22016 15.1545 8.17883 15.0822C8.15818 15.046 8.14117 15.016 8.12903 14.9933C8.12311 14.9822 8.11829 14.9725 8.11438 14.965C8.11244 14.9612 8.11092 14.9571 8.1095 14.9542L8.10657 14.9484H8.10559C8.10541 14.948 8.10571 14.9473 9.00012 14.5001L8.10559 14.9474C7.8586 14.4534 8.05889 13.8526 8.55286 13.6056C9.04618 13.3589 9.64608 13.5583 9.89368 14.0509L9.89465 14.0519C9.89817 14.0585 9.90476 14.0718 9.91516 14.09C9.93634 14.127 9.97134 14.1855 10.0197 14.2579C10.1176 14.4048 10.2644 14.6004 10.4572 14.7931C10.8481 15.184 11.3589 15.5001 12.0001 15.5001C12.6413 15.5001 13.1521 15.1841 13.5431 14.7931C13.7358 14.6003 13.8827 14.4048 13.9806 14.2579C14.0289 14.1854 14.0639 14.127 14.0851 14.09C14.0955 14.0717 14.1021 14.0585 14.1056 14.0519L14.1075 14.049ZM8.53625 8.22961C9.08846 8.22961 9.53612 8.67744 9.53625 9.22961V11.3077C9.53611 11.8599 9.08845 12.3077 8.53625 12.3077C7.98415 12.3076 7.5364 11.8598 7.53625 11.3077V9.22961C7.53639 8.67751 7.98415 8.22973 8.53625 8.22961ZM15.463 8.22961C16.0152 8.22961 16.4629 8.67744 16.463 9.22961V11.3077C16.4629 11.8599 16.0152 12.3077 15.463 12.3077C14.911 12.3075 14.4632 11.8598 14.463 11.3077V9.22961C14.4631 8.67759 14.911 8.22986 15.463 8.22961Z" fill="currentColor" />
-              </svg>
-            </span>
-            About me
-          </Link>
         </nav>
       </header>
 
@@ -307,16 +298,16 @@ function Home() {
         <div className="home-main home-grid-main">
           <div className="home-main-body">
             <div className="home-hero-copy" id={HERO_ID} ref={heroRef}>
-              <p className="home-bio">
-                I bridge AI-native product thinking, product strategy, and design execution to turn
-                complex technology into intuitive user experiences.
-              </p>
-              <p className="home-bio-secondary">
-                Currently shaping AI experiences at{' '}
-                <a href="https://clickup.com" target="_blank" rel="noreferrer">ClickUp</a>. Also worked with{' '}
-                <a href="https://www.wrike.com" target="_blank" rel="noreferrer">Wrike</a> and{' '}
-                <a href="https://www.sberbank.com" target="_blank" rel="noreferrer">Sberbank</a>.
-              </p>
+              <div className="home-hero-bio">
+                <p className="home-bio">
+                  I bridge AI-native product thinking, product strategy, and design execution to turn
+                  complex technology into intuitive user experiences.
+                </p>
+                <p className="home-bio-secondary">
+                  Currently shaping AI experiences at{' '}
+                  <a href="https://clickup.com" target="_blank" rel="noreferrer">ClickUp</a>.
+                </p>
+              </div>
             </div>
 
             <div className="home-work-feed" aria-label="Selected work">

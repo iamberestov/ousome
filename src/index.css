@@ -35,10 +35,12 @@
   --home-grid-max: 1920px;
   --home-grid-margin: 80px;
   --home-grid-gap: 16px;
-  --home-body-size: 28px;
-  --home-body-leading: 40px;
+  --home-body-size: 24px;
+  --home-body-leading: 24px;
   --home-tag-size: 20px;
   --home-header-offset: 136px;
+  --home-hero-intro-padding: 48px;
+  --home-hero-bio-offset: calc(var(--home-hero-intro-padding) / 2);
   --home-bottom-rail: clamp(96px, 15svh, 128px);
   --stagger-dur: 500ms;
   --stagger-distance: 12px;
@@ -90,6 +92,7 @@
     --home-body-leading: 32px;
     --home-tag-size: 16px;
     --home-header-offset: 100px;
+    --home-hero-intro-padding: 32px;
     --home-bottom-rail: clamp(80px, 14svh, 108px);
   }
 

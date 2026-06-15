@@ -91,15 +91,22 @@
 }
 
 .home-hero-copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  column-gap: var(--home-grid-gap);
+  align-content: center;
   flex: 1 0 auto;
   gap: 0;
   min-height: calc(100svh - var(--home-header-offset) - var(--home-bottom-rail));
   max-height: calc(100svh - var(--home-header-offset) - var(--home-bottom-rail));
   min-width: 0;
   box-sizing: border-box;
+}
+
+.home-hero-bio {
+  grid-column: 3 / 7;
+  min-width: 0;
+  margin-top: var(--home-hero-bio-offset);
 }
 
 .home-work-feed {
@@ -138,7 +145,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding-block: 48px;
+  padding-block: var(--home-hero-intro-padding);
 }
 
 .home-avatar {
@@ -468,14 +475,14 @@ button.home-nav-link:focus-visible {
 .home-sidebar-heading {
   font-size: var(--home-body-size);
   font-weight: 400;
-  line-height: var(--home-body-leading);
+  line-height: normal;
   color: var(--text-h);
   margin-bottom: var(--home-body-leading);
 }
 
 .home-sidebar-body {
   font-size: var(--home-body-size);
-  line-height: var(--home-body-leading);
+  line-height: normal;
   color: var(--text-h);
   font-weight: 400;
 }
@@ -483,7 +490,7 @@ button.home-nav-link:focus-visible {
 .home-bio,
 .home-bio-secondary {
   font-size: var(--home-body-size);
-  line-height: var(--home-body-leading);
+  line-height: normal;
   color: var(--text-h);
   font-weight: 400;
 }
@@ -580,9 +587,18 @@ button.home-nav-link:focus-visible {
   }
 
   .home-hero-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     min-height: auto;
     max-height: none;
     flex: none;
+  }
+
+  .home-hero-bio {
+    grid-column: auto;
+    width: 100%;
+    margin-top: 0;
   }
 
   .home-main-body {
@@ -613,7 +629,6 @@ button.home-nav-link:focus-visible {
 
   .home-sidebar-intro {
     flex: none;
-    padding-block: 32px;
   }
 }
 
@@ -831,7 +846,7 @@ button.home-nav-link:focus-visible {
 
 .about-placeholder {
   font-size: var(--home-body-size);
-  line-height: var(--home-body-leading);
+  line-height: normal;
   color: var(--gray-muted);
 }
 
