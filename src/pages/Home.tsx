@@ -104,6 +104,35 @@ function Home() {
     }
   }, [])
 
+  useEffect(() => {
+    const main = mainScrollRef.current
+    const sidebar = sidebarScrollRef.current
+    if (!main || !sidebar) return
+
+    const linkedScrollQuery = window.matchMedia('(max-width: 900px)')
+
+    const onWheel = (event: WheelEvent) => {
+      if (linkedScrollQuery.matches) return
+
+      const sidebarMax = sidebar.scrollHeight - sidebar.clientHeight
+      const scrollingUp = event.deltaY < 0
+      const scrollingDown = event.deltaY > 0
+      const atTop = sidebar.scrollTop <= 0
+      const atBottom = sidebar.scrollTop >= sidebarMax - 1
+
+      if (sidebarMax <= 0 || (scrollingUp && atTop) || (scrollingDown && atBottom)) {
+        main.scrollTop += event.deltaY
+        event.preventDefault()
+      }
+    }
+
+    sidebar.addEventListener('wheel', onWheel, { passive: false })
+
+    return () => {
+      sidebar.removeEventListener('wheel', onWheel)
+    }
+  }, [])
+
   const activeSection = activeSectionId
     ? workSections.find((section) => section.id === activeSectionId)
     : undefined
@@ -115,21 +144,30 @@ function Home() {
       return
     }
 
-    const staggerBlocks = [sidebarStaggerRef.current, workActiveStaggerRef.current].filter(
-      (block): block is HTMLDivElement => Boolean(block),
-    )
+    const workActiveBlock = workActiveStaggerRef.current
+    const sidebarBlock = sidebarStaggerRef.current
     const previousId = displayedSectionIdRef.current
     const isContentSwitch = previousId !== null && previousId !== activeSectionId
+    const previousSection = previousId
+      ? workSections.find((section) => section.id === previousId)
+      : undefined
+    const isProjectSwitch =
+      !previousSection ||
+      previousSection.projectTitle !== activeSection.projectTitle ||
+      previousSection.projectMeta !== activeSection.projectMeta
 
-    const revealBlocks = () => {
-      staggerBlocks.forEach((block) => {
-        block.classList.remove('is-hiding', 'is-shown')
-        void block.offsetHeight
-        block.classList.add('is-shown')
-      })
+    const revealBlock = (block: HTMLDivElement) => {
+      block.classList.remove('is-hiding', 'is-shown')
+      void block.offsetHeight
+      block.classList.add('is-shown')
     }
 
-    if (!staggerBlocks.length) {
+    const hideBlock = (block: HTMLDivElement) => {
+      block.classList.add('is-hiding')
+      block.classList.remove('is-shown')
+    }
+
+    if (!workActiveBlock && !sidebarBlock) {
       setDisplayedSection(activeSection)
       displayedSectionIdRef.current = activeSectionId
       return
@@ -138,20 +176,34 @@ function Home() {
     if (!isContentSwitch) {
       setDisplayedSection(activeSection)
       displayedSectionIdRef.current = activeSectionId
-      revealBlocks()
+      if (workActiveBlock) revealBlock(workActiveBlock)
+      if (sidebarBlock) revealBlock(sidebarBlock)
       return
     }
 
-    staggerBlocks.forEach((block) => {
-      block.classList.add('is-hiding')
-      block.classList.remove('is-shown')
-    })
+    const blocksToAnimate = [
+      ...(sidebarBlock ? [sidebarBlock] : []),
+      ...(workActiveBlock && isProjectSwitch ? [workActiveBlock] : []),
+    ]
 
-    const timeout = window.setTimeout(() => {
-      staggerBlocks.forEach((block) => block.classList.remove('is-hiding'))
+    if (workActiveBlock && !isProjectSwitch) {
+      workActiveBlock.classList.remove('is-hiding')
+      workActiveBlock.classList.add('is-shown')
+    }
+
+    if (!blocksToAnimate.length) {
       setDisplayedSection(activeSection)
       displayedSectionIdRef.current = activeSectionId
-      revealBlocks()
+      return
+    }
+
+    blocksToAnimate.forEach(hideBlock)
+
+    const timeout = window.setTimeout(() => {
+      blocksToAnimate.forEach((block) => block.classList.remove('is-hiding'))
+      setDisplayedSection(activeSection)
+      displayedSectionIdRef.current = activeSectionId
+      blocksToAnimate.forEach(revealBlock)
     }, STAGGER_HIDE_MS)
 
     return () => window.clearTimeout(timeout)

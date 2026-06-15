@@ -112,6 +112,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  box-sizing: border-box;
 }
 
 .home-sidebar-center {
@@ -426,16 +427,16 @@ button.home-nav-link:focus-visible {
 }
 
 .home-sidebar-heading {
-  font-size: 20px;
+  font-size: var(--home-body-size);
   font-weight: 400;
-  line-height: normal;
+  line-height: var(--home-body-leading);
   color: var(--text-h);
   margin-bottom: var(--home-body-leading);
 }
 
 .home-sidebar-body {
-  font-size: 28px;
-  line-height: normal;
+  font-size: var(--home-body-size);
+  line-height: var(--home-body-leading);
   color: var(--text-h);
   font-weight: 400;
 }

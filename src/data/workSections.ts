@@ -115,7 +115,7 @@ const workSections: WorkSection[] = [
     ...agentsProject,
     sidebarHeading: 'Cumulative impact',
     sidebarBody:
-      'Helped define and design ClickUp Super Agents from concept to scaled adoption, contributing to 250K+ agents created. My work influenced activation, retention, quality, and monetization by turning a technically complex AI system into an approachable product experience. I also shaped a distinct visual language and interaction model that became a strong product differentiator, helping Super Agents stand out in demos, sales conversations, and a crowded AI market.',
+      'Helped define and design ClickUp Super Agents from concept to scaled adoption, contributing to 250K+ agents created.',
     media: {
       type: 'video',
       src: '/work/project-04/eyebrow-figma.mp4',
@@ -133,7 +133,8 @@ const workSections: WorkSection[] = [
     meta: 'ClickUp / 2025',
     height: 800,
     ...agentsProject,
-    sidebarBody: 'Placeholder copy for the Dashboard Platform case study.',
+    sidebarBody:
+      'My work influenced activation, retention, quality, and monetization by turning a technically complex AI system into an approachable product experience.',
     media: {
       type: 'svg',
       src: '/work/project-05/consumption.svg',
@@ -148,7 +149,8 @@ const workSections: WorkSection[] = [
     meta: 'ClickUp / 2025',
     height: 800,
     ...agentsProject,
-    sidebarBody: 'Placeholder copy for the Design System case study.',
+    sidebarBody:
+      'I also shaped a distinct visual language and interaction model that became a strong product differentiator, helping Super Agents stand out in demos, sales conversations, and a crowded AI market.',
     media: {
       type: 'svg',
       src: '/work/project-06/credits.svg',
