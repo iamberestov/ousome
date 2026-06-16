@@ -759,15 +759,9 @@ button.home-nav-link--hit:focus-visible {
     padding-top: 0;
   }
 
-  .home-sidebar-intro,
-  .home-sidebar-body,
-  .home-work-active {
-    padding-inline-end: var(--home-mobile-nav-inset);
-    box-sizing: border-box;
-  }
-
   .home-sidebar-intro {
     flex: none;
+    padding-inline-end: 0;
   }
 }
 

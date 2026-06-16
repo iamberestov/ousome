@@ -9,6 +9,23 @@ import WorkMedia from '../components/WorkMedia'
 const HERO_ID = 'hero-intro'
 const STAGGER_HIDE_MS = 200
 const AVATAR_SOUND_SRC = '/sounds/tap_01.mp3'
+const MOBILE_LAYOUT_QUERY = '(max-width: 900px)'
+
+function useMobileLayout() {
+  const [isMobileLayout, setIsMobileLayout] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(MOBILE_LAYOUT_QUERY).matches,
+  )
+
+  useEffect(() => {
+    const query = window.matchMedia(MOBILE_LAYOUT_QUERY)
+    const update = () => setIsMobileLayout(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+
+  return isMobileLayout
+}
 
 const tags = [
   'B2B SAAS',
@@ -22,6 +39,7 @@ const tags = [
 ]
 
 function Home() {
+  const isMobileLayout = useMobileLayout()
   const mainScrollRef = useRef<HTMLDivElement>(null)
   const sidebarScrollRef = useRef<HTMLDivElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
@@ -30,6 +48,8 @@ function Home() {
   const workActiveStaggerRef = useRef<HTMLDivElement>(null)
   const avatarSoundRef = useRef<HTMLAudioElement | null>(null)
   const displayedSectionIdRef = useRef<string | null>(null)
+  const activeSectionIdRef = useRef<string | null>(null)
+  const scrollRafRef = useRef<number | null>(null)
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null)
   const [displayedSection, setDisplayedSection] = useState<WorkSection | undefined>(undefined)
   const [mainScrollRoot, setMainScrollRoot] = useState<HTMLDivElement | null>(null)
@@ -51,6 +71,7 @@ function Home() {
 
   const scrollToIntro = () => {
     playAvatarSound()
+    activeSectionIdRef.current = null
     setActiveSectionId(null)
     smoothScrollElementsToTop([mainScrollRef.current])
   }
@@ -91,8 +112,19 @@ function Home() {
       return activeId
     }
 
+    const commitActiveSectionId = (nextId: string | null) => {
+      if (nextId === activeSectionIdRef.current) return
+      activeSectionIdRef.current = nextId
+      setActiveSectionId(nextId)
+    }
+
     const updateActiveSection = () => {
-      setActiveSectionId(resolveActiveSectionId())
+      if (scrollRafRef.current !== null) return
+
+      scrollRafRef.current = window.requestAnimationFrame(() => {
+        scrollRafRef.current = null
+        commitActiveSectionId(resolveActiveSectionId())
+      })
     }
 
     const observer = new IntersectionObserver(updateActiveSection, {
@@ -113,6 +145,9 @@ function Home() {
     updateActiveSection()
 
     return () => {
+      if (scrollRafRef.current !== null) {
+        window.cancelAnimationFrame(scrollRafRef.current)
+      }
       observer.disconnect()
       root.removeEventListener('scroll', updateActiveSection)
     }
@@ -152,6 +187,8 @@ function Home() {
     : undefined
 
   useLayoutEffect(() => {
+    if (isMobileLayout) return
+
     if (!activeSection || !activeSectionId) {
       displayedSectionIdRef.current = null
       setDisplayedSection(undefined)
@@ -221,9 +258,11 @@ function Home() {
     }, STAGGER_HIDE_MS)
 
     return () => window.clearTimeout(timeout)
-  }, [activeSection, activeSectionId])
+  }, [activeSection, activeSectionId, isMobileLayout])
 
   const visibleSidebarSection = displayedSection ?? activeSection
+  const showSidebarIntro = !activeSection || isMobileLayout
+  const showSidebarWork = Boolean(activeSection && !isMobileLayout)
 
   const linkedInNavContent = (
     <span className="home-nav-blend">
@@ -287,7 +326,7 @@ function Home() {
         <div className="home-columns home-grid">
         <aside className="home-sidebar home-grid-sidebar" aria-label="Profile">
           <div className="home-sidebar-scroll" ref={sidebarScrollRef}>
-            {activeSection ? (
+            {showSidebarWork ? (
               <>
                 <div
                   ref={workActiveStaggerRef}
@@ -320,14 +359,16 @@ function Home() {
                   </div>
                 </div>
               </>
-            ) : (
+            ) : null}
+
+            {showSidebarIntro ? (
               <div className="home-sidebar-center">
                 <div className="home-sidebar-intro" aria-live="polite">
                   <h1>Hey, I&apos;m Igor B.</h1>
                   <p className="home-role">Staff Product Designer</p>
                 </div>
               </div>
-            )}
+            ) : null}
 
             <div className="home-tags" aria-label="Focus areas">
               {tags.map((tag) => (
