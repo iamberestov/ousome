@@ -3,9 +3,12 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Portfolio from './pages/Portfolio'
 import PortfolioItem from './pages/PortfolioItem'
+import { useGlobalClickSound } from './hooks/useGlobalClickSound'
 import './App.css'
 
 function App() {
+  useGlobalClickSound()
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />

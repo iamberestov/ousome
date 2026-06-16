@@ -90,6 +90,7 @@ function EmailCopyText() {
     <button
       type="button"
       className={`home-footer-email${copied ? ' is-copied' : ''}`}
+      data-own-sound
       onClick={handleClick}
       aria-label={copied ? 'Email copied' : 'Say hi by email, copy email address'}
     >

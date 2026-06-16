@@ -17,6 +17,7 @@
   width: 100%;
   max-width: none;
   height: 100svh;
+  height: 100dvh;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -257,7 +258,7 @@
   white-space: nowrap;
   position: relative;
   font-family: var(--sans);
-  font-size: var(--home-body-size);
+  font-size: var(--home-hero-body-size);
   font-weight: 400;
   line-height: normal;
   text-decoration: none;
@@ -566,14 +567,14 @@ button.home-nav-link--hit:focus-visible {
 }
 
 .home-sidebar-intro h1 {
-  font-size: var(--home-body-size);
+  font-size: var(--home-hero-body-size);
   font-weight: 400;
   line-height: normal;
   color: var(--text-h);
 }
 
 .home-role {
-  font-size: var(--home-body-size);
+  font-size: var(--home-hero-body-size);
   line-height: normal;
   color: var(--gray-muted);
   font-weight: 400;
@@ -603,14 +604,14 @@ button.home-nav-link--hit:focus-visible {
 
 .home-bio,
 .home-bio-secondary {
-  font-size: var(--home-body-size);
+  font-size: var(--home-hero-body-size);
   line-height: normal;
   color: var(--text-h);
   font-weight: 400;
 }
 
 .home-bio-secondary {
-  margin-top: var(--home-body-leading);
+  margin-top: var(--home-hero-body-leading);
 
   a {
     color: var(--text-h);
@@ -659,8 +660,13 @@ button.home-nav-link--hit:focus-visible {
 }
 
 @media (max-width: 900px) {
+  :root {
+    --home-header-offset: calc(28px + 72px + 20px);
+  }
+
   .home-page {
     height: 100svh;
+    height: 100dvh;
     overflow: hidden;
     padding: 0;
   }
@@ -688,6 +694,8 @@ button.home-nav-link--hit:focus-visible {
   .home-columns {
     display: block;
     overflow: visible;
+    padding-top: var(--home-header-offset);
+    box-sizing: border-box;
   }
 
   .home-scroll {
@@ -696,7 +704,8 @@ button.home-nav-link--hit:focus-visible {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
+    overscroll-behavior-y: contain;
+    scroll-padding-top: var(--home-header-offset);
   }
 
   .home-grid-sidebar,
@@ -711,13 +720,16 @@ button.home-nav-link--hit:focus-visible {
     min-height: auto;
     max-height: none;
     flex: none;
-    padding-top: var(--home-header-offset);
+    padding-top: 0;
   }
 
   .home-hero-bio {
     grid-column: auto;
     width: 100%;
+    max-width: none;
     margin-top: 0;
+    padding-inline: 0;
+    box-sizing: border-box;
   }
 
   .home-main-body {
@@ -744,7 +756,14 @@ button.home-nav-link--hit:focus-visible {
     min-height: auto;
     height: auto;
     overflow: visible;
-    padding-top: var(--home-header-offset);
+    padding-top: 0;
+  }
+
+  .home-sidebar-intro,
+  .home-sidebar-body,
+  .home-work-active {
+    padding-inline-end: var(--home-mobile-nav-inset);
+    box-sizing: border-box;
   }
 
   .home-sidebar-intro {

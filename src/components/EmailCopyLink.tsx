@@ -112,6 +112,7 @@ function EmailCopyLink() {
         <button
           type="button"
           className="home-nav-link home-nav-link--hit"
+          data-own-sound
           onClick={handleClick}
           aria-label={copied ? 'Email copied' : `Copy email ${EMAIL}`}
         >

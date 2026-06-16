@@ -8,7 +8,7 @@ import WorkMedia from '../components/WorkMedia'
 
 const HERO_ID = 'hero-intro'
 const STAGGER_HIDE_MS = 200
-const AVATAR_SOUND_SRC = '/sounds/avatar-pop.mp3'
+const AVATAR_SOUND_SRC = '/sounds/tap_01.mp3'
 
 const tags = [
   'B2B SAAS',
@@ -241,6 +241,7 @@ function Home() {
       <button
         type="button"
         className="home-avatar home-grid-avatar t-press"
+        data-own-sound
         onClick={scrollToIntro}
         aria-label="Back to intro"
       >

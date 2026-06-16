@@ -37,8 +37,11 @@
   --home-grid-gap: 16px;
   --home-body-size: 24px;
   --home-body-leading: 24px;
+  --home-hero-body-size: 24px;
+  --home-hero-body-leading: 24px;
   --home-tag-size: 20px;
   --home-header-offset: 136px;
+  --home-mobile-nav-inset: clamp(168px, 18vw, 260px);
   --home-hero-intro-padding: 48px;
   --home-hero-bio-offset: calc(var(--home-hero-intro-padding) / 2);
   --home-bottom-rail: clamp(96px, 15svh, 128px);
@@ -97,6 +100,7 @@
     --home-header-offset: 100px;
     --home-hero-intro-padding: 32px;
     --home-bottom-rail: clamp(80px, 14svh, 108px);
+    --home-mobile-nav-inset: clamp(168px, 40vw, 240px);
   }
 
   @media (max-width: 640px) {
@@ -107,6 +111,7 @@
     --home-body-leading: 28px;
     --home-tag-size: 14px;
     --home-header-offset: 120px;
+    --home-mobile-nav-inset: clamp(180px, 52vw, 220px);
   }
 }
 
@@ -164,6 +169,7 @@
 
 #root:has(.home-page) {
   height: 100svh;
+  height: 100dvh;
   overflow: hidden;
   isolation: isolate;
 }
